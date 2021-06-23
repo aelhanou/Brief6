@@ -1,6 +1,10 @@
 <template>
   <table>
-    <TableElements :data="data" @editRendezVous="editRendezV" />
+    <TableElements
+      :data="data"
+      @editRendezVous="editRendezV"
+      @DeleteEvent="Delete"
+    />
   </table>
   <div v-show="showFormEdit">
     <form @submit="saveEdit">
@@ -46,14 +50,17 @@ export default {
     };
   },
   methods: {
+    Delete() {
+      this.readAll();
+    },
     async readAll() {
       let Ref = localStorage.getItem("Ref");
-
+      let token = localStorage.getItem("token")
       let resp = await fetch("http://localhost/brief6/rendezVous/readAll", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          
+           authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           Ref: Ref,

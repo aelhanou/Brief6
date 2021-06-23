@@ -8,16 +8,24 @@ class rendezVous extends Controller
         $this->rendezV = $this->model("rendezVousM");
     }
 
-    
+
 
     public function readAll()
     {
-        $data = json_decode(file_get_contents("php://input"));
 
-        // die(var_dump($data));
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->rendezV->readAll($data))
-                echo json_encode($this->rendezV->readAll($data));
+            $data = json_decode(file_get_contents("php://input"));
+
+            $headers = apache_request_headers();
+
+            $headers = $headers['authorization'] ? explode(" ", $headers['authorization']) : '';
+
+            if (count($headers) == 1) {
+                echo json_encode(["response" => "redirect"]);
+            } else {
+                if ($this->rendezV->readAll($data))
+                    echo json_encode($this->rendezV->readAll($data));
+            }
         }
     }
     public function read_single()
@@ -29,19 +37,23 @@ class rendezVous extends Controller
                 echo json_encode($this->rendezV->read_single($data));
         }
     }
+
+    public function checkTime()
+    {
+        $data = json_decode(file_get_contents("php://input"));
+        if ($this->rendezV->checkTime($data)) {
+            echo json_encode($this->rendezV->checkTime($data));
+        }
+    }
     public function insert()
     {
 
         $data = json_decode(file_get_contents("php://input"));
 
-        if ($this->rendezV->checkTime($data) == 0) {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                if ($this->rendezV->insert($data)) {
-                    echo json_encode(['Success' => 'the appointment has reserved sucussefly']);
-                }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->rendezV->insert($data)) {
+                echo json_encode(["Success", "Created Successfully"]);
             }
-        } else {
-            echo json_encode("exist");
         }
     }
 
@@ -59,14 +71,14 @@ class rendezVous extends Controller
     public function update()
     {
         $data = json_decode(file_get_contents("php://input"));
-        if ($this->rendezV->checkTime($data) == 0) {
-            if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-                if ($this->rendezV->update($data)) {
-                    echo json_encode(['Success' => 'data has updated']);
-                }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+            if ($this->rendezV->update($data)) {
+                echo json_encode(['Success' => 'data has updated']);
             }
-        } else {
-            echo json_encode("exist");
         }
+        // } else {
+        //     echo json_encode("exist");
+        // }
     }
 }

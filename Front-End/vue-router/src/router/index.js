@@ -31,15 +31,6 @@ const routes = [
     name: "CreateRendezVous",
     component : CreateRendezVous
   }
-  // {
-  //   path: "/about",
-  //   name: "About",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  // },
 ];
 
 const router = createRouter({
@@ -47,4 +38,35 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.fullPath === '/rendezVous') {
+    if (!localStorage.getItem('token')) {
+      next('/Login');
+    }
+  }
+  if (to.fullPath === '/ref') {
+    if (localStorage.getItem('token')) {
+      next('/rendezVous');
+    }
+  }
+  if (to.fullPath === '/CreateRendezVous') {
+    if (!localStorage.getItem('token')) {
+      next('/');
+    }
+  }
+  if (to.fullPath === '/register') {
+    if (localStorage.getItem('token')) {
+      next('/rendezVous');
+    }
+  }
+
+
+  if (to.fullPath === '/Home') {
+    if (localStorage.getItem('token')) {
+      next('/');
+    }
+  }
+  next()
+
+});
 export default router;

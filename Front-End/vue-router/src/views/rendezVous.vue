@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="ref">REFERENCE : {{this.ref}}</p>
+    <p class="ref">REFERENCE : {{this.ref ? this.ref : null}}</p>
     <Logout title="Log out"/>
   </div>
     <Button title="Create" /> 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>home</p>
+
     <router-link to="/register"
       ><button class="user">New User</button></router-link
     >
@@ -17,13 +17,12 @@
 </template>
 
 
-
 <script>
 export default {
   name: "Home",
   data() {
     return {
-      data: localStorage.getItem("Ref") ? localStorage.getItem("Ref") : "",
+      data: localStorage.getItem("Ref") ? localStorage.getItem("Ref") : null ,
     };
   },
 };

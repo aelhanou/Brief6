@@ -39,12 +39,14 @@ export default {
         }),
       });
 
-      this.readAll();
+      this.$emit("DeleteEvent")
+     
     },
     async Edit(id) {
         this.$emit("editRendezVous",id)
     },
   },
+    $emits: ["editRendezVous","DeleteEvent"],
 };
 </script>
 

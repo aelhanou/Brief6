@@ -34,13 +34,14 @@ class rendezVousM
 
     public function checkTime($data)
     {
-        $query = "SELECT Date , time FROM `$this->table` WHERE Date =:R_date AND  time=:R_time ";
+        $query = "SELECT  time FROM `$this->table` WHERE Date =:R_date ";
         $stm = $this->conn->query($query);
         $this->conn->bind(":R_date", $data->Date);
-        $this->conn->bind(":R_time", $data->time);
-
-        $this->conn->single();
-        return $this->conn->rowCount();
+        // $this->conn->bind(":R_time", $data->time);
+        // $this->conn->single();
+        
+     
+        return $this->conn->resultSet();
     }
     public function insert($data)
     {
